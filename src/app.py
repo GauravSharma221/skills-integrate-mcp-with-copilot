@@ -14,8 +14,14 @@ import os
 from pathlib import Path
 from typing import List, Dict
 
-from database import get_db, init_db
-from models import Activity, Student, Membership, MembershipStatus
+try:
+    # Try relative imports first (when running as a module)
+    from .database import get_db, init_db
+    from .models import Activity, Student, Membership, MembershipStatus
+except ImportError:
+    # Fall back to absolute imports (when running directly from src/)
+    from database import get_db, init_db
+    from models import Activity, Student, Membership, MembershipStatus
 
 app = FastAPI(title="Mergington High School API",
               description="API for viewing and signing up for extracurricular activities")

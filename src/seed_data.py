@@ -2,8 +2,14 @@
 Seed script to populate the database with initial data
 Run this script to migrate from in-memory data to the database
 """
-from database import SessionLocal, init_db
-from models import Activity, Student, Membership, MembershipStatus
+try:
+    # Try relative imports first (when running as a module)
+    from .database import SessionLocal, init_db
+    from .models import Activity, Student, Membership, MembershipStatus
+except ImportError:
+    # Fall back to absolute imports (when running directly from src/)
+    from database import SessionLocal, init_db
+    from models import Activity, Student, Membership, MembershipStatus
 
 
 def seed_activities():

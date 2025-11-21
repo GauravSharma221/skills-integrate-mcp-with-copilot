@@ -5,7 +5,13 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum as SQ
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
-from database import Base
+
+try:
+    # Try relative import first (when running as a module)
+    from .database import Base
+except ImportError:
+    # Fall back to absolute import (when running directly from src/)
+    from database import Base
 
 
 class Student(Base):
