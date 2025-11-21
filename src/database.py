@@ -5,9 +5,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
+from pathlib import Path
 
 # Database configuration
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./school_activities.db")
+# Use absolute path for SQLite database to ensure consistency regardless of where app is run from
+DB_DIR = Path(__file__).parent
+DEFAULT_DB_PATH = DB_DIR / "school_activities.db"
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DEFAULT_DB_PATH}")
 
 # Create engine
 engine = create_engine(
