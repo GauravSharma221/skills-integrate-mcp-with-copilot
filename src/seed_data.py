@@ -133,8 +133,8 @@ def seed_students_and_memberships():
         for email, activity_names in students_data:
             # Create student (basic record for now)
             student = Student(
-                first_name="",
-                last_name="",
+                first_name="Pending",
+                last_name="Pending",
                 email=email
             )
             db.add(student)
