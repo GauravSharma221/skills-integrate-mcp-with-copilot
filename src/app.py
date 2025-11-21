@@ -81,8 +81,8 @@ def signup_for_activity(activity_name: str, email: str, db: Session = Depends(ge
         # Create a basic student record with just email
         # Full profile will be added when authentication is implemented
         student = Student(
-            first_name="",
-            last_name="",
+            first_name="Unknown",
+            last_name="Unknown",
             email=email
         )
         db.add(student)
