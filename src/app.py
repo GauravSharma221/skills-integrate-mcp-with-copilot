@@ -44,18 +44,17 @@ def get_activities(db: Session = Depends(get_db)) -> Dict:
     # Format response to match the original structure
     result = {}
     for activity in activities_list:
-        # Get accepted memberships for this activity
-        accepted_memberships = db.query(Membership).filter(
-            Membership.activity_id == activity.id,
-            Membership.status == MembershipStatus.ACCEPTED
-        ).all()
-        
-        # Get student emails
-        participants = []
-        for membership in accepted_memberships:
-            student = db.query(Student).filter(Student.id == membership.student_id).first()
-            if student:
-                participants.append(student.email)
+        # Get participant emails for accepted memberships in a single query (avoid N+1)
+        participants = [
+            student.email
+            for student, in db.query(Student.email)
+                .join(Membership, Student.id == Membership.student_id)
+                .filter(
+                    Membership.activity_id == activity.id,
+                    Membership.status == MembershipStatus.ACCEPTED
+                )
+                .all()
+        ]
         
         result[activity.name] = {
             "description": activity.description,
